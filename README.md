@@ -28,7 +28,7 @@ Or install it yourself as:
 
 Set up for usage by creating Realogy's migration and running it.
 
-    # TODO: Command to generate migration file
+    rails g realogy:install
     rails db:migrate
 
 Realogy is expecting these ENV variables to be present to be able to function:
