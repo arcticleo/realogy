@@ -1,6 +1,6 @@
 # Realogy
 
-This Realogy gem encapsulates the Realogy DataSync API to synchronize local data store with the data maintained by Realogy.
+Ruby implementation that encapsulates the Realogy DataSync API to synchronize local data store with the data maintained by Realogy.
 
 The Realogy gem:
 
