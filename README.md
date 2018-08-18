@@ -93,27 +93,17 @@ realogy.get_active_teams()
 
 When no argument is submitted, all entities are returned. Filters can be applied for `brandCode` or `countryCode` though, provided as keys in a hash. For example:
 
-Fetch all active agents, for all brands, in all countries:
-
 ```ruby
+# Fetch all active agents, for all brands, in all countries:
 realogy.get_active_agents()
-```
 
-Fetch all active agents, for all brands, in Sweden:
-
-```ruby
+# Fetch all active agents, for all brands, in Sweden:
 realogy.get_active_agents({countryCode: "SE"})
-```
 
-Fetch all active Sotheby's agents in all countries:
-
-```ruby
+# Fetch all active Sotheby's agents in all countries:
 realogy.get_active_agents({brandCode: "SIR"})
-```
 
-Fetch all active Sotheby's agents in Sweden:
-
-```ruby
+# Fetch all active Sotheby's agents in Sweden:
 realogy.get_active_agents({brandCode: "SIR", countryCode: "SE"})
 ```
 
