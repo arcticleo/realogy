@@ -47,11 +47,11 @@ REALOGY_API_BASE_URL
 Run these rake tasks for syncing active entities:
 
 ```
-rails realogy:sync_active_agents         # Sync Active Agents
-rails realogy:sync_active_companies      # Sync Active Companies
-rails realogy:sync_active_listings       # Sync Active Listings
-rails realogy:sync_active_offices        # Sync Active Offices
-rails realogy:sync_active_teams          # Sync Active Teams
+$ rails realogy:sync_active_agents         # Sync Active Agents
+$ rails realogy:sync_active_companies      # Sync Active Companies
+$ rails realogy:sync_active_listings       # Sync Active Listings
+$ rails realogy:sync_active_offices        # Sync Active Offices
+$ rails realogy:sync_active_teams          # Sync Active Teams
 ```
 
 Catch-all that runs all other syncing tasks:
