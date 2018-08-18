@@ -105,6 +105,12 @@ Fetch all active agents, for all brands, in Sweden:
 realogy.get_active_agents({countryCode: "SE"})
 ```
 
+Fetch all active Sotheby's agents in all countries:
+
+```ruby
+realogy.get_active_agents({brandCode: "SIR"})
+```
+
 Fetch all active Sotheby's agents in Sweden:
 
 ```ruby
