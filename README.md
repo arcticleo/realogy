@@ -13,7 +13,7 @@ The Realogy gem:
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'realogy-sync'
+gem 'realogy'
 ```
 
 And then execute:
@@ -22,7 +22,7 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install realogy-sync
+    $ gem install realogy
 
 ## Usage
 
