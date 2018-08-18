@@ -60,11 +60,11 @@ Catch-all that runs all other syncing tasks:
 rails realogy:sync_active_entities       # Sync all active entities
 ```
 
-#### Background/parallel processing
+### Background/parallel processing
 
-If Active Job isn't configured for queueing and background processing, Realogy will default to running rake tasks one after another on the main thread.
+If Active Job isn't configured for queueing and background processing, Realogy will default to running rake tasks sequentially on the main thread.
 
-Because of the volume of Realogy data, you will most definitely want to configure to use Active Job with several workers in production. That will cause Realogy's rake tasks to use it.
+Because of the volume of Realogy data, you will want to use Active Job for parallel processing in production. Configuring Active Job will cause available rake tasks to use it.
 
 For example, if you've got Delayed Job installed, you'd add to your application.rb:
 
