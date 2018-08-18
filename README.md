@@ -26,12 +26,12 @@ Or install it yourself as:
 
 ## Usage
 
-Set up for usage by creating Realogy::Sync's migration and running it.
+Set up for usage by creating Realogy's migration and running it.
 
     $ # TODO: Command to generate migration file
     $ rails db:migrate
 
-Realogy::Sync is expecting these ENV variables to be present to be able to function:
+Realogy is expecting these ENV variables to be present to be able to function:
 
 ```
 REALOGY_CLIENT_ID
