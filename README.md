@@ -18,18 +18,18 @@ gem 'realogy'
 
 And then execute:
 
-    $ bundle
+    bundle
 
 Or install it yourself as:
 
-    $ gem install realogy
+    gem install realogy
 
 ## Usage
 
 Set up for usage by creating Realogy's migration and running it.
 
-    $ # TODO: Command to generate migration file
-    $ rails db:migrate
+    # TODO: Command to generate migration file
+    rails db:migrate
 
 Realogy is expecting these ENV variables to be present to be able to function:
 
@@ -47,11 +47,11 @@ REALOGY_API_BASE_URL
 Run these rake tasks for syncing active entities:
 
 ```
-$ rails realogy:sync_active_agents         # Sync Active Agents
-$ rails realogy:sync_active_companies      # Sync Active Companies
-$ rails realogy:sync_active_listings       # Sync Active Listings
-$ rails realogy:sync_active_offices        # Sync Active Offices
-$ rails realogy:sync_active_teams          # Sync Active Teams
+rails realogy:sync_active_agents         # Sync Active Agents
+rails realogy:sync_active_companies      # Sync Active Companies
+rails realogy:sync_active_listings       # Sync Active Listings
+rails realogy:sync_active_offices        # Sync Active Offices
+rails realogy:sync_active_teams          # Sync Active Teams
 ```
 
 Catch-all that runs all other syncing tasks:
