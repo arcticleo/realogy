@@ -1,4 +1,5 @@
 require "bundler/setup"
+require "active_record"
 require "realogy"
 
 RSpec.configure do |config|

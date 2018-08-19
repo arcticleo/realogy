@@ -1,5 +1,5 @@
 require "spec_helper"
- 
+
 module Realogy
 
   describe DataSync do

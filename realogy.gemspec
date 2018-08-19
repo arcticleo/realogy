@@ -11,7 +11,7 @@ Gem::Specification.new do |spec|
 
   spec.summary       = %q{Encapsulation of Realogy's DataSync API.}
   spec.description   = %q{Encapsulates the Realogy DataSync API to synchronize local data store with the data maintained by Realogy.}
-  spec.homepage      = "TODO: Put your gem's website or public repo URL here."
+  spec.homepage      = "https://github.com/arcticleo/realogy"
   spec.license       = "MIT"
 
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
@@ -33,5 +33,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "bundler", "~> 1.14"
   spec.add_development_dependency "rake", "~> 10.0"
   spec.add_development_dependency "rspec", "~> 3.0"
+  spec.add_development_dependency 'sqlite3'
+  spec.add_dependency "activerecord", ">= 3.0"
   spec.add_dependency "oauth2"
 end
