@@ -60,6 +60,16 @@ Catch-all that runs all other syncing tasks:
 rails realogy:sync_active_entities       # Sync all active entities
 ```
 
+By default, all countries are synced. A country code can optionally be passed in to sync only that country:
+
+```
+rails realogy:sync_active_agents[SE]         # Sync Active Agents in Sweden
+rails realogy:sync_active_companies[SE]      # Sync Active Companies in Sweden
+rails realogy:sync_active_listings[SE]       # Sync Active Listings in Sweden
+rails realogy:sync_active_offices[SE]        # Sync Active Offices in Sweden
+rails realogy:sync_active_teams[SE]          # Sync Active Teams in Sweden
+```
+
 ### Background/parallel processing
 
 If Active Job isn't configured for queueing and background processing, Realogy will default to running rake tasks sequentially on the main thread.

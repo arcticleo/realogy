@@ -1,4 +1,5 @@
 require "realogy/version"
+require "realogy/railtie" if defined?(Rails)
 require "realogy/app/models/application_record.rb"
 require "realogy/app/models/data_sync.rb"
 require "realogy/app/models/realogy/entity.rb"

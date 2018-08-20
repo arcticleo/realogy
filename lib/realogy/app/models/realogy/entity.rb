@@ -17,7 +17,7 @@ class Realogy::Entity < ApplicationRecord
   
   def populate
     call = ["get_", self.class.to_s.downcase.split("::").last, "_by_id"].join.to_sym
-    self.data = Realogy::client.__send__(call, self.entity_id)
+    self.data = Realogy::DataSync.client.__send__(call, self.entity_id)
     self.save if self.changed?
   end
 

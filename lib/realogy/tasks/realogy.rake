@@ -1,0 +1,57 @@
+namespace :realogy do
+
+  def active_job_configured?
+    return Rails.application.config.active_job.queue_adapter.eql?(:async) ? false : true
+  end
+
+  desc "Sync all active entities"
+  task :sync_active_entities => [:sync_active_agents, :sync_active_companies, :sync_active_listings, :sync_active_offices, :sync_active_teams] do
+    puts
+  end
+
+  desc "Sync Active Agents"
+  task :sync_active_agents, [:country_code] => [:environment] do |t, args|
+    args.with_defaults(country_code: nil)
+    Realogy::DataSync.client.get_active_agents({countryCode: args["country_code"]}).each do |hash|
+      hash['class'] = "Realogy::Agent"
+      active_job_configured? ? PopulateRealogyEntityJob.perform_later(hash) : Realogy::Agent::triage(hash) 
+    end
+  end
+
+  desc "Sync Active Companies"
+  task :sync_active_companies, [:country_code] => [:environment] do |t, args|
+    args.with_defaults(country_code: nil)
+    Realogy::DataSync.client.get_active_companies({countryCode: args["country_code"]}).each do |hash|
+      hash['class'] = "Realogy::Company"
+      active_job_configured? ? PopulateRealogyEntityJob.perform_later(hash) : Realogy::Company::triage(hash)
+    end
+  end
+
+  desc "Sync Active Listings"
+  task :sync_active_listings, [:country_code] => [:environment] do |t, args|
+    args.with_defaults(country_code: nil)
+    Realogy::DataSync.client.get_active_listings({countryCode: args["country_code"]}).each do |hash|
+      hash['class'] = "Realogy::Listing"
+      active_job_configured? ? PopulateRealogyEntityJob.perform_later(hash) : Realogy::Listing::triage(hash)
+    end
+  end
+
+  desc "Sync Active Offices"
+  task :sync_active_offices, [:country_code] => [:environment] do |t, args|
+    args.with_defaults(country_code: nil)
+    Realogy::DataSync.client.get_active_offices({countryCode: args["country_code"]}).each do |hash|
+      hash['class'] = "Realogy::Office"
+      active_job_configured? ? PopulateRealogyEntityJob.perform_later(hash) : Realogy::Office::triage(hash)
+    end
+  end
+
+  desc "Sync Active Teams"
+  task :sync_active_teams, [:country_code] => [:environment] do |t, args|
+    args.with_defaults(country_code: nil)
+    Realogy::DataSync.client.get_active_teams({countryCode: args["country_code"]}).each do |hash|
+      hash['class'] = "Realogy::Team"
+      active_job_configured? ? PopulateRealogyEntityJob.perform_later(hash) : Realogy::Team::triage(hash)
+    end
+  end
+
+end
