@@ -44,14 +44,25 @@ REALOGY_API_BASE_URL
 
 ### Available Rake Tasks
 
-Run these rake tasks for syncing active entities:
+#### Syncing Active Entities
+
+There are a number of rake tasks for syncing active entities. By default, all countries are synced. A country code can optionally be passed in to sync only that country.
 
 ```
-rails realogy:sync_active_agents         # Sync Active Agents
-rails realogy:sync_active_companies      # Sync Active Companies
-rails realogy:sync_active_listings       # Sync Active Listings
-rails realogy:sync_active_offices        # Sync Active Offices
-rails realogy:sync_active_teams          # Sync Active Teams
+rails realogy:sync_active_agents         # Sync Active Agents Everywhere
+rails realogy:sync_active_agents[SE]     # Sync Active Agents in Sweden
+
+rails realogy:sync_active_companies      # Sync Active Companies Everywhere
+rails realogy:sync_active_companies[SE]  # Sync Active Companies in Sweden
+
+rails realogy:sync_active_listings       # Sync Active Listings Everywhere
+rails realogy:sync_active_listings[SE]   # Sync Active Listings in Sweden
+
+rails realogy:sync_active_offices        # Sync Active Offices Everywhere
+rails realogy:sync_active_offices[SE]    # Sync Active Offices in Sweden
+
+rails realogy:sync_active_teams          # Sync Active Teams Everywhere
+rails realogy:sync_active_teams[SE]      # Sync Active Teams in Sweden
 ```
 
 Catch-all that runs all other syncing tasks:
@@ -60,14 +71,20 @@ Catch-all that runs all other syncing tasks:
 rails realogy:sync_active_entities       # Sync all active entities
 ```
 
-By default, all countries are synced. A country code can optionally be passed in to sync only that country:
+#### Delete Expired Entities
 
 ```
-rails realogy:sync_active_agents[SE]         # Sync Active Agents in Sweden
-rails realogy:sync_active_companies[SE]      # Sync Active Companies in Sweden
-rails realogy:sync_active_listings[SE]       # Sync Active Listings in Sweden
-rails realogy:sync_active_offices[SE]        # Sync Active Offices in Sweden
-rails realogy:sync_active_teams[SE]          # Sync Active Teams in Sweden
+rails realogy:delete_expired_agents         # Delete Expired Agents
+rails realogy:delete_expired_companies      # Delete Expired Companies
+rails realogy:delete_expired_listings       # Delete Expired Listings
+rails realogy:delete_expired_offices        # Delete Expired Offices
+rails realogy:delete_expired_teams          # Delete Expired Teams
+```
+
+Catch-all that runs all other deletion tasks:
+
+```
+rails realogy:delete_expired_entities       # Delete all expired entities
 ```
 
 ### Background/parallel processing

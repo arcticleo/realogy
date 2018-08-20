@@ -54,4 +54,43 @@ namespace :realogy do
     end
   end
 
+  def delete_expired_entities_of_type klass
+    return unless %w(agents companies listings offices teams).include?(plural = klass.to_s.tableize.split("/").last)
+    call = ["get_active_", plural].join.to_sym
+    existing = klass.select(:entity_id).pluck(:entity_id)
+    current = Realogy::DataSync.client.__send__(call).map{|e| e["entityId"]}
+    klass.where(entity_id: (existing - current)).delete_all
+  end
+
+  desc "Delete all expired entities"
+  task :delete_expired_entities => [:delete_expired_agents, :delete_expired_companies, :delete_expired_listings, :delete_expired_offices, :delete_expired_teams] do
+    puts
+  end
+
+  desc "Delete Expired Agents"
+  task :delete_expired_agents => [:environment] do |t|
+    delete_expired_entities_of_type Realogy::Agent
+  end
+
+  desc "Delete Expired Companies"
+  task :delete_expired_companies => [:environment] do |t|
+    delete_expired_entities_of_type Realogy::Company
+  end
+
+  desc "Delete Expired Listings"
+  task :delete_expired_listings => [:environment] do |t|
+    delete_expired_entities_of_type Realogy::Listing
+  end
+
+  desc "Delete Expired Offices"
+  task :delete_expired_offices => [:environment] do |t|
+    delete_expired_entities_of_type Realogy::Office
+  end
+
+  desc "Delete Expired Teams"
+  task :delete_expired_teams => [:environment] do |t|
+    delete_expired_entities_of_type Realogy::Team
+  end
+
+
 end
