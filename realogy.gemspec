@@ -13,6 +13,7 @@ Gem::Specification.new do |spec|
   spec.description   = %q{Encapsulates the Realogy DataSync API to synchronize local data store with the data maintained by Realogy.}
   spec.homepage      = "https://github.com/arcticleo/realogy"
   spec.license       = "MIT"
+  spec.required_ruby_version = '>= 2.4.3'
 
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
   # to allow pushing to a single host or delete this section to allow pushing to any host.
@@ -34,6 +35,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rake", "~> 10.0"
   spec.add_development_dependency "rspec", "~> 3.0"
   spec.add_development_dependency 'sqlite3'
-  spec.add_dependency "activerecord", ">= 3.0"
+  spec.add_dependency "activerecord", ">= 5.0"
   spec.add_dependency "oauth2"
 end
