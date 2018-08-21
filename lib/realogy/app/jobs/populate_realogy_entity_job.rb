@@ -1,5 +1,5 @@
 class PopulateRealogyEntityJob < ApplicationJob
-  queue_as :default
+  queue_as :realogy
 
   def perform(hash)
     hash['class'].constantize::triage(hash)
