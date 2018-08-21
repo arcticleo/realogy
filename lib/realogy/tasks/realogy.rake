@@ -59,7 +59,7 @@ namespace :realogy do
     call = ["get_active_", plural].join.to_sym
     existing = klass.select(:entity_id).pluck(:entity_id)
     current = Realogy::DataSync.client.__send__(call).map{|e| e["entityId"]}
-    klass.where(entity_id: (existing - current)).delete_all
+    klass.where(entity_id: (existing - current)).destroy_all
   end
 
   desc "Delete all expired entities"
@@ -90,6 +90,50 @@ namespace :realogy do
   desc "Delete Expired Teams"
   task :delete_expired_teams => [:environment] do |t|
     delete_expired_entities_of_type Realogy::Team
+  end
+
+  def perform_delta_update_for klass, since
+    return unless %w(agents companies listings offices teams).include?(plural = klass.to_s.tableize.split("/").last)
+    call = "get_#{plural}_delta".to_sym
+    Realogy::DataSync.client.send(call, {since: since.to_i.minutes.ago}).each do |hash|
+      case hash["action"]
+      when "Delete"
+        klass.find_by(entity_id: hash["id"]).try(:destroy)
+      when "Upsert"
+        hash["class"] = klass.to_s
+        active_job_configured? ? PopulateRealogyEntityJob.perform_later(hash) : klass::triage(hash)
+      end
+    end
+  end
+  
+  desc "Delta update for Agents. Optionally provide delta in minutes."
+  task :sync_agents_delta, [:since_minutes] => [:environment] do |t, args|
+    args.with_defaults(since_minutes: 15)
+    perform_delta_update_for Realogy::Agent, args[:since_minutes]
+  end
+
+  desc "Delta update for Companies. Optionally provide delta in minutes."
+  task :sync_companies_delta, [:since_minutes] => [:environment] do |t, args|
+    args.with_defaults(since_minutes: 15)
+    perform_delta_update_for Realogy::Company, args[:since_minutes]
+  end
+
+  desc "Delta update for Listings. Optionally provide delta in minutes."
+  task :sync_listings_delta, [:since_minutes] => [:environment] do |t, args|
+    args.with_defaults(since_minutes: 15)
+    perform_delta_update_for Realogy::Listing, args[:since_minutes]
+  end
+
+  desc "Delta update for Offices. Optionally provide delta in minutes."
+  task :sync_offices_delta, [:since_minutes] => [:environment] do |t, args|
+    args.with_defaults(since_minutes: 15)
+    perform_delta_update_for Realogy::Office, args[:since_minutes]
+  end
+
+  desc "Delta update for Teams. Optionally provide delta in minutes."
+  task :sync_teams_delta, [:since_minutes] => [:environment] do |t, args|
+    args.with_defaults(since_minutes: 15)
+    perform_delta_update_for Realogy::Team, args[:since_minutes]
   end
 
 

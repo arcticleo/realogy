@@ -10,7 +10,7 @@ class Realogy::Entity < ApplicationRecord
   end
 
   def self.triage hash
-    @object = self.find_or_initialize_by(entity_id: hash["entityId"])
+    @object = self.find_or_initialize_by(entity_id: [hash["entityId"], hash["id"]].compact.first)
     @object.last_update_on = hash["lastUpdateOn"]
     @object.populate if @object.needs_updating?
   end

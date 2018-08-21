@@ -71,14 +71,35 @@ Catch-all that runs all other syncing tasks:
 rails realogy:sync_active_entities       # Sync all active entities
 ```
 
-#### Delete Expired Entities
+#### Syncing Entities Delta
+
+There are a number of rake tasks for syncing entities within a delta span of time. Tasks default to last 15 minutes if not otherwise specified. These tasks will both update new/updated entities, as well as delete expired ones. 
 
 ```
-rails realogy:delete_expired_agents         # Delete Expired Agents
-rails realogy:delete_expired_companies      # Delete Expired Companies
-rails realogy:delete_expired_listings       # Delete Expired Listings
-rails realogy:delete_expired_offices        # Delete Expired Offices
-rails realogy:delete_expired_teams          # Delete Expired Teams
+rails realogy:sync_agents_delta         # Sync agents delta for last 15 minutes 
+rails realogy:sync_agents_delta[10]     # Sync agents delta for last 10 minutes
+
+rails realogy:sync_companies_delta      # Sync companies delta for last 15 minutes
+rails realogy:sync_companies_delta[10]  # Sync companies delta for last 10 minutes
+
+rails realogy:sync_listings_delta       # Sync listings delta for last 15 minutes
+rails realogy:sync_listings_delta[10]   # Sync listings delta for last 10 minutes
+
+rails realogy:sync_offices_delta        # Sync offices delta for last 15 minutes
+rails realogy:sync_offices_delta[10]    # Sync offices delta for last 10 minutes
+
+rails realogy:sync_teams_delta          # Sync teams delta for last 15 minutes
+rails realogy:sync_teams_delta[10]      # Sync teams delta for last 10 minutes
+```
+
+#### Delete All Expired Entities
+
+```
+rails realogy:delete_expired_agents         # Delete All Expired Agents
+rails realogy:delete_expired_companies      # Delete All Expired Companies
+rails realogy:delete_expired_listings       # Delete All Expired Listings
+rails realogy:delete_expired_offices        # Delete All Expired Offices
+rails realogy:delete_expired_teams          # Delete All Expired Teams
 ```
 
 Catch-all that runs all other deletion tasks:
@@ -111,11 +132,11 @@ realogy = Realogy::DataSync.client
 The calls to retrieve entities are:
 
 ```ruby
-realogy.get_active_agents()
-realogy.get_active_companies()
-realogy.get_active_listings()
-realogy.get_active_offices()
-realogy.get_active_teams()
+realogy.get_active_agents
+realogy.get_active_companies
+realogy.get_active_listings
+realogy.get_active_offices
+realogy.get_active_teams
 ```
 
 When no argument is submitted, all entities are returned. Filters can be applied for `brandCode` or `countryCode` though, provided as keys in a hash. For example:
@@ -136,7 +157,27 @@ realogy.get_active_agents({brandCode: "SIR", countryCode: "SE"})
 
 #### Retrieve delta of objects
 
-TODO
+The calls to retrieve entities that have recently changed are:
+
+```ruby
+realogy.get_agents_delta
+realogy.get_companies_delta
+realogy.get_listings_delta
+realogy.get_offices_delta
+realogy.get_teams_delta
+```
+
+Each hash in the returned arrays includes a key `action` that returns either `Delete` or `Upsert` to indicate if the object has been deleted or created/updated.
+
+When no argument is passed, the delta returned is for the last 15 minutes. A custom minutes delta can be passed in:
+
+```ruby
+realogy.get_agents_delta({since: 15.minutes.ago})     # 15 minutes is the default
+realogy.get_companies_delta({since: 1.hour.ago})
+realogy.get_listings_delta({since: 2.hours.ago})
+realogy.get_offices_delta({since: 5.minutes.ago})
+realogy.get_teams_delta({since: 1.day.ago})
+```
 
 #### Retrieve JSON object
 

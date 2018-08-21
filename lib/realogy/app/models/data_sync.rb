@@ -23,11 +23,11 @@ module Realogy
     }
   
     DELTA_API_ENDPOINTS = {
-      get_agent_delta: "agents/delta",
-      get_company_delta: "companies/delta",
-      get_listing_delta: "listings/delta",
-      get_office_delta: "offices/delta",
-      get_team_delta: "teams/delta"
+      get_agents_delta: "agents/delta",
+      get_companies_delta: "companies/delta",
+      get_listings_delta: "listings/delta",
+      get_offices_delta: "offices/delta",
+      get_teams_delta: "teams/delta"
     }
   
     DETAILS_API_ENDPOINTS = {
@@ -51,6 +51,22 @@ module Realogy
         return perform_api_call(endpoint, params)
       end
     end
+
+    DELTA_API_ENDPOINTS.keys.each do |method_name|
+      define_method method_name do |*args|
+        entities = []
+        hash = args.first.is_a?(Hash) ? args.first : {since: 15.minutes.ago}
+        params = {'since': JSON[hash[:since].to_json]}
+        endpoint = DELTA_API_ENDPOINTS[method_name]
+        response = perform_api_call(endpoint, params)
+        entities << response["data"]
+        while response["nextLink"].present?
+          response = perform_simple_call(response["nextLink"])
+          entities << response["data"]
+        end
+        return entities.flatten
+      end
+    end
   
     DETAILS_API_ENDPOINTS.keys.each do |method_name|
       define_method method_name do |id|
@@ -65,6 +81,17 @@ module Realogy
 
     def uri_for_endpoint endpoint
       return URI([ENV["REALOGY_API_BASE_URL"], endpoint].join("/"))
+    end
+  
+    def perform_simple_call(url)
+      uri = URI(url)
+      request = Net::HTTP::Get.new(uri)
+      request['Ocp-Apim-Subscription-Key'] = ENV["REALOGY_SUBSCRIPTION_KEY"]
+      request['Authorization'] = "Bearer #{auth_token}"
+      response = Net::HTTP.start(uri.host, uri.port, :use_ssl => uri.scheme == 'https') do |http|
+        http.request(request)
+      end
+      return JSON(response.body)
     end
   
     def perform_api_call(endpoint, params)
