@@ -3,6 +3,7 @@ module Realogy
 
     require 'net/http'
     require 'oauth2'
+    require 'json'
     
     @@instance = Realogy::DataSync.new
 
@@ -126,14 +127,41 @@ module Realogy
     end
   
     def oauth2_client_credentials_token(client_id, client_secret, token_url, scope)
+      @token = OAuth2::AccessToken.read_token_from_file(".oauth-access-token.json")
       expiry = @token.try(:expires_at).present? ? DateTime.strptime(@token.expires_at.to_s, '%s') : 1.day.ago
       if expiry > DateTime.now.utc
         return @token.token
       else
         @token = oauth2_client_credentials_token_object(client_id, client_secret, token_url, scope)
+        @token.save_token_to_file(".oauth-access-token.json")
         return @token.token
       end
     end
     
   end
 end
+
+OAuth2::AccessToken.class_eval do
+  def self.read_token_from_file path
+    data = nil
+    token = nil
+    client = OAuth2::Client.new(
+      ENV["REALOGY_CLIENT_ID"],
+      ENV["REALOGY_CLIENT_SECRET"],
+      token_url:  ENV["REALOGY_TOKEN_URL"]
+    )
+    if File.exists?(path)
+      File.open(path) do |f|
+        token = OAuth2::AccessToken.from_hash(client, JSON.parse(f.read))
+      end
+    end
+    return token
+  end
+
+  def save_token_to_file path
+    File.open(path, "w+") do |f|
+      f << self.to_hash.to_json
+    end
+  end
+end
+
