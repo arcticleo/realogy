@@ -104,7 +104,7 @@ module Realogy
       response = Net::HTTP.start(uri.host, uri.port, :use_ssl => uri.scheme == 'https') do |http|
         http.request(request)
       end
-      return JSON(response.body)
+      return JSON(response.body) rescue nil
     end
   
     def auth_token
