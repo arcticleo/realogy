@@ -22,4 +22,38 @@ class Realogy::Entity < ApplicationRecord
     self.save if self.changed?
   end
 
+  def dig_for_array(*path)
+    return nil unless (json = self.data).is_a?(Hash)
+    (v = json.dig(*path)).is_a?(Array) ? v : nil
+  end
+
+  def dig_for_boolean(*path)
+    return nil unless (json = self.data).is_a?(Hash)
+    (v = json.dig(*path)).to_s.upcase.eql?("TRUE") ? true : nil
+  end
+
+  def dig_for_datetime(*path)
+    self.data.dig(*path).to_datetime rescue nil
+  end
+
+  def dig_for_decimal(*path)
+    return nil unless (json = self.data).is_a?(Hash)
+    (v = json.dig(*path).to_f) != 0.0 ? v : nil
+  end
+
+  def dig_for_hash(*path)
+    return nil unless (json = self.data).is_a?(Hash)
+    (v = json.dig(*path)).is_a?(Hash) ? v : nil
+  end
+
+  def dig_for_integer(*path)
+    return nil unless (json = self.data).is_a?(Hash)
+    (v = json.dig(*path).to_i) != 0 ? v : nil
+  end
+
+  def dig_for_string(*path)
+    return nil unless (json = self.data).is_a?(Hash)
+    (v = json.dig(*path)).to_s.present? ? (v.eql?("0") ? nil : v) : nil
+  end
+
 end
