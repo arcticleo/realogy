@@ -228,6 +228,23 @@ Convenience methods to access JSON.
 - specialty
 - websites
 
+#### Realogy::Company
+
+- addl_language_names
+- addl_websites
+- brand_code
+- can_do_commercial_business?
+- commercial_company_name
+- company_id
+- company_summary
+- is_nrt?
+- last_update_on
+- media
+- name
+- programs
+- rfg_id
+- website_url
+
 #### Realogy::Listing
 
 - active?
