@@ -382,6 +382,52 @@ Convenience methods to access JSON.
 - year_renovated
 - zoning
 
+#### Realogy::Office
+
+- addl_language_names
+- addl_phone_numbers
+- addl_websites
+- area_served
+- brand_code
+- broker_name
+- city
+- company_id
+- company_name
+- country
+- country_code
+- default_photo_url
+- district
+- email_address
+- entity_preference
+- fax_number
+- formatted_address
+- geographic_regions
+- languages_spoken
+- last_update_on
+- latitude
+- lead_email_address
+- longitude
+- media
+- mls_information
+- name
+- office_address
+- office_id
+- office_manager_name
+- office_summary
+- office_type
+- phone_number
+- postal_code
+- recruiting_email_address
+- remarks
+- rfg_company_id
+- rfg_office_id
+- seasonal_close_mmdd
+- seasonal_open_mmdd
+- special_markets
+- state_province
+- state_province_code
+- street_address
+- website_url
 
 ## Development
 
