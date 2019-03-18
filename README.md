@@ -194,6 +194,40 @@ realogy.get_team_by_id(entity_id)
 
 Convenience methods to access JSON.
 
+#### Realogy::Agent
+
+- addl_emails
+- addl_languages_names
+- addl_phones
+- agent_summary
+- agent_id
+- areas_of_specialization
+- business_phone
+- business_phone_ext
+- default_photo_url
+- designations
+- display_title
+- email_address
+- first_name
+- gender
+- is_agent?
+- is_team_member?
+- languages_spoken
+- last_name
+- last_update_on
+- lead_email_address
+- license_info
+- media
+- middle_name
+- mls_information
+- mobile_phone
+- name
+- office
+- remarks
+- roles
+- specialty
+- websites
+
 #### Realogy::Listing
 
 - active?
