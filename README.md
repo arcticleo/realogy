@@ -429,6 +429,27 @@ Convenience methods to access JSON.
 - street_address
 - website_url
 
+#### Realogy::Team
+
+- awards
+- addl_phone_numbers
+- addl_emails
+- addl_language_names
+- addl_websites
+- email_address
+- last_update_on
+- media
+- members 
+- name
+- office
+- phone_number
+- remarks
+- rfg_team_id
+- team_id
+- team_type 
+- team_summary
+- website_url
+
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
