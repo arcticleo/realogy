@@ -55,6 +55,27 @@ class Realogy::Agent < Realogy::Entity
     self.dig_for_string("agentSummary", "businessPhoneExt")
   end
    
+  # office / brandCode : String
+  # The Franchise that the Office is part of
+  
+  def company_brand_code
+    self.dig_for_string("agentSummary", "office", "brandCode")
+  end
+  
+  # office / companyId : String
+  # description": "Globally unique identifier assigned to a company by Realogy
+  
+  def company_id
+    self.dig_for_string("agentSummary", "office", "companyId")
+  end
+  
+  # office / companyName : String
+  # Name of the Company
+  
+  def company_name
+    self.dig_for_string("agentSummary", "office", "companyName")
+  end
+  
   # defaultPhotoURL : String
   # Profile photo URL for the Agent
   
@@ -200,6 +221,131 @@ class Realogy::Agent < Realogy::Entity
     self.dig_for_string("agentSummary", "office")
   end
    
+  # office / officeAddress : Hash
+  
+  def office_address
+    self.dig_for_hash("agentSummary", "office", "officeAddress")
+  end
+  
+  # office / officeAddress / city : String
+  # City
+  
+  def office_city
+    self.dig_for_string("agentSummary", "office", "officeAddress", "city")
+  end
+  
+  # office / officeAddress / country : String
+  # Country
+  
+  def office_country
+    self.dig_for_string("agentSummary", "office", "officeAddress", "country")
+  end
+  
+  # office / officeAddress / countryCode : String
+  # ISO Code of the country
+  
+  def office_country_code
+    self.dig_for_string("agentSummary", "office", "officeAddress", "countryCode")
+  end
+  
+  # office / officeAddress / district : String
+  # Subdivision name in the country or region for the address. In USA it's same as County.
+  
+  def office_district
+    self.dig_for_string("agentSummary", "office", "officeAddress", "district")
+  end
+  
+  # office / emailAddress : String
+  # Main contact email address for the office
+  
+  def office_email_address
+    self.dig_for_string("agentSummary", "office", "emailAddress")
+  end
+  
+  # office / faxNumber : String
+  # Fax number for the office
+  
+  def office_fax_number
+    self.dig_for_string("agentSummary", "office", "faxNumber")
+  end
+  
+  # office / officeAddress / formattedAddress : String
+  # Formatted address for display purpose
+  
+  def office_formatted_address
+    self.dig_for_string("agentSummary", "office", "officeAddress", "formattedAddress")
+  end
+  
+  # office / officeId : String
+  # Globally unique identifier assigned to an office by Realogy
+  
+  def office_id
+    self.dig_for_string("agentSummary", "office", "officeId")
+  end
+  
+  # office / officeAddress / latitude : Decimal
+  # Latitude of a location
+  
+  def office_latitude
+    self.dig_for_decimal("agentSummary", "office", "officeAddress", "latitude")
+  end
+  
+  # office / officeAddress / longitude : Decimal
+  # Longitude of a location
+  
+  def office_longitude
+    self.dig_for_decimal("agentSummary", "office", "officeAddress", "longitude")
+  end
+  
+  # office / name : String
+  # Name of the office
+  
+  def office_name
+    self.dig_for_string("agentSummary", "office", "name")
+  end
+  
+  # office / officeAddress / phoneNumber : String
+  # Main contact phone number for the office
+  
+  def office_phone_number
+    self.dig_for_string("agentSummary", "office", "officeAddress", "phoneNumber")
+  end
+  
+  # office / officeAddress / postalCode : String
+  # ZIP/Postal code
+  
+  def office_postal_code
+    self.dig_for_string("agentSummary", "office", "officeAddress", "postalCode")
+  end
+  
+  # office / officeAddress / stateProvince : String
+  # State/Province where the address is
+  
+  def office_state_province
+    self.dig_for_string("agentSummary", "office", "officeAddress", "stateProvince")
+  end
+  
+  # office / officeAddress / stateProvinceCode : String
+  # ISO code of the state
+  
+  def office_state_province_code
+    self.dig_for_string("agentSummary", "office", "officeAddress", "stateProvinceCode")
+  end
+  
+  # office / officeAddress / streetAddress : String
+  # Street address
+  
+  def office_street_address
+    self.dig_for_string("agentSummary", "office", "officeAddress", "streetAddress")
+  end
+  
+  # office / type : String
+  # Type of office (Main, Branch, etc.)
+  
+  def office_type
+    self.dig_for_string("agentSummary", "office", "type")
+  end
+  
   # remarks : [Hash]
   # A collection of Profile descriptions associated with the Agent
    
