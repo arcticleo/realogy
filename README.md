@@ -210,7 +210,9 @@ Convenience methods to access JSON.
 - email_address
 - first_name
 - gender
+- has_producing_role?
 - is_agent?
+- is_full_time?
 - is_team_member?
 - languages_spoken
 - last_name

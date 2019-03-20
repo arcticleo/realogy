@@ -97,13 +97,27 @@ class Realogy::Agent < Realogy::Entity
     self.dig_for_string("agentSummary", "gender")
   end
    
+  # isProducingRole : Boolean
+  #
+  def has_producing_role?
+    return nil unless (arr = self.roles).is_a?(Array)
+    arr.map{|r| r.dig_for_boolean("isProducingRole")}.include?(true)
+  end
+  
   # isAgent : Boolean
   # Indicates whether the person is an agent or not
   
   def is_agent?
     self.dig_for_boolean("agentSummary", "isAgent")
   end
-   
+  
+  # isFullTime : Boolean
+  
+  def is_full_time?
+    return nil unless (arr = self.roles).is_a?(Array)
+    arr.map{|r| r.dig_for_boolean("isFullTime")}.include?(true)
+  end
+
   # isTeamMember : Boolean
   # Indicates whether the person is a team member or not
   
