@@ -18,7 +18,7 @@ class Realogy::Company < Realogy::Entity
   # The brand that the Company is associated with
   
   def brand_code
-    self.dig_for_array("companySummary", "brandCode")
+    self.dig_for_string("companySummary", "brandCode")
   end
   
   # canDoCommercialBusiness : Boolean
