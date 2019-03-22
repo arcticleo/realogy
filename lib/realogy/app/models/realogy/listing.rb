@@ -482,6 +482,10 @@ class Realogy::Listing < Realogy::Entity
     self.dig_for_array("propertyFeatures")
   end
   
+  def has_open_house?
+    self.open_house.present?
+  end
+
   # openHouse : [Hash]
   # Collection of OpenHouses for the property
   
