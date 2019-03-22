@@ -1,5 +1,12 @@
 class Realogy::Listing < Realogy::Entity
 
+  # Array
+
+  def company_names
+    return nil if self.agents.nil?
+    self.agents.map{|a| a.dig_for_string("office", "companyName")}.uniq
+  end
+
   # fullBath : Integer
   # Number of full baths in the property
 
