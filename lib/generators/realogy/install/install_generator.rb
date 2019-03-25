@@ -8,13 +8,12 @@ module Realogy
       desc "Copy migration file to your application."
 
       def self.next_migration_number(path)
-        Time.now.utc.strftime("%Y%m%d%H%M%S%L")
+        Time.now.utc.strftime("%Y%m%d%H%M%S")
       end
 
       def create_model_file
         %w[realogy_entities].each do |name|
           migration_template "create_#{name}.rb", "db/migrate/create_#{name}.rb"
-          sleep 0.1
         end
       end
 
