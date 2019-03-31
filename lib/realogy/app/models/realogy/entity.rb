@@ -11,13 +11,12 @@ class Realogy::Entity < ApplicationRecord
 
   def self.triage hash
     @object = self.find_or_initialize_by(entity_id: [hash["entityId"], hash["id"]].compact.first)
-    @object.last_update_on = hash["lastUpdateOn"].to_s.to_time
+    @object.last_update_on = hash["lastUpdateOn"].to_s.to_datetime
     @object.populate if @object.needs_updating?
   end
   
   def populate
     call = ["get_", self.class.to_s.downcase.split("::").last, "_by_id"].join.to_sym
-    puts call.inspect
     result = Realogy::DataSync.client.__send__(call, self.entity_id)
     self.data = result unless result.blank?
     self.save if self.changed?
