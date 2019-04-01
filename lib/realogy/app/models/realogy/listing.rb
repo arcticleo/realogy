@@ -652,6 +652,10 @@ class Realogy::Listing < Realogy::Entity
     self.dig_for_string("listingSummary", "listPrice", "currencyCode")
   end
   
+  def list_price_in_usd
+    self.dig_for_integer("listingSummary", "listPrice", "listPriceinUSD")
+  end
+  
   def price_upon_request?
     self.dig_for_boolean("listingSummary", "listPrice", "isPriceUponRequest")
   end
