@@ -96,7 +96,7 @@ namespace :realogy do
     return unless %w(agents companies listings offices teams).include?(plural = klass.to_s.tableize.split("/").last)
     call = "get_#{plural}_delta".to_sym
     Realogy::DataSync.client.send(call, {since: since.to_i.minutes.ago}).each do |hash|
-      case hash["action"]
+      case Hash(hash["action"])
       when "Delete"
         klass.find_by(entity_id: hash["id"]).try(:destroy)
       when "Upsert"
