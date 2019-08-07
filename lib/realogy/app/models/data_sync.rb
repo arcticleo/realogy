@@ -90,6 +90,7 @@ module Realogy
       request['Ocp-Apim-Subscription-Key'] = ENV["REALOGY_SUBSCRIPTION_KEY"]
       request['Authorization'] = "Bearer #{auth_token}"
       response = Net::HTTP.start(uri.host, uri.port, :use_ssl => uri.scheme == 'https') do |http|
+        http.max_retries = 10
         http.request(request)
       end
       return JSON(response.body)
@@ -103,6 +104,7 @@ module Realogy
       request['Ocp-Apim-Subscription-Key'] = ENV["REALOGY_SUBSCRIPTION_KEY"]
       request['Authorization'] = "Bearer #{auth_token}"
       response = Net::HTTP.start(uri.host, uri.port, :use_ssl => uri.scheme == 'https') do |http|
+        http.max_retries = 10
         http.request(request)
       end
       return JSON(response.body) rescue nil
