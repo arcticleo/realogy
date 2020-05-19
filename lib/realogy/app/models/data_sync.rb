@@ -43,7 +43,7 @@ module Realogy
   
     ACTIVE_API_ENDPOINTS.keys.each do |method_name|
       define_method method_name do |*args|
-        hash = args.first.is_a?(Hash) ? args.first : {}
+        hash = args.first.is_a?(::Hash) ? args.first : {}
         endpoint = ACTIVE_API_ENDPOINTS[method_name]
         params = {
           'brandCode': hash[:brandCode],
@@ -56,7 +56,7 @@ module Realogy
     DELTA_API_ENDPOINTS.keys.each do |method_name|
       define_method method_name do |*args|
         entities = []
-        hash = args.first.is_a?(Hash) ? args.first : {since: 15.minutes.ago}
+        hash = args.first.is_a?(::Hash) ? args.first : {since: 15.minutes.ago}
         params = {'since': JSON[hash[:since].to_json]}
         endpoint = DELTA_API_ENDPOINTS[method_name]
         response = perform_api_call(endpoint, params)
