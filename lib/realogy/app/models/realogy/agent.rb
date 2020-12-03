@@ -163,7 +163,7 @@ class Realogy::Agent < Realogy::Entity
   # lastUpdateOn : DateTime
   # The date/time that the Agent record was last updated in the system (UTC)
   
-  def last_update_on
+  def last_updated
     self.dig_for_datetime("lastUpdateOn")
   end
    

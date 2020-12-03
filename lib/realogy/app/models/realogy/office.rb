@@ -136,7 +136,7 @@ class Realogy::Office < Realogy::Entity
   # lastUpdateOn : DateTime
   # The date/time that the Office record was last updated in the system (UTC)
   
-  def last_update_on
+  def last_updated
     self.dig_for_datetime("lastUpdateOn")
   end
   

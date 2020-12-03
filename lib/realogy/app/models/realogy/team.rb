@@ -44,7 +44,7 @@ class Realogy::Team < Realogy::Entity
   # lastUpdateOn : Datetime
   # The date/time in UTC when the team was last updated
   
-  def last_update_on
+  def last_updated
     self.dig_for_datetime("lastUpdateOn")
   end
   

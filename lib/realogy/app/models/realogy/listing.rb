@@ -887,7 +887,7 @@ class Realogy::Listing < Realogy::Entity
   #   lastUpdateOn : DateTime
   #   Timestamp when the listing was last updated at Realogy system
   
-  def last_update_on
+  def last_updated
     self.dig_for_datetime("listingSummary", "lastUpdateOn")
   end
   
