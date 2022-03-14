@@ -4,13 +4,13 @@ module Realogy
     require 'net/http'
     require 'oauth2'
     require 'json'
-    
+
     @@instance = Realogy::DataSync.new
 
     def self.client
       return @@instance
     end
-
+    
     private_class_method :new
 
     # API endpoints by type
@@ -81,13 +81,13 @@ module Realogy
     # Utility
 
     def uri_for_endpoint endpoint
-      return URI([ENV["REALOGY_API_BASE_URL"], endpoint].join("/"))
+      return URI([Rails.application.credentials.dig(:realogy, :api_base_url), endpoint].join("/"))
     end
   
     def perform_simple_call(url)
       uri = URI(url)
       request = Net::HTTP::Get.new(uri)
-      request['Ocp-Apim-Subscription-Key'] = ENV["REALOGY_SUBSCRIPTION_KEY"]
+      request['Ocp-Apim-Subscription-Key'] = Rails.application.credentials.dig(:realogy, :subscription_key)
       request['Authorization'] = "Bearer #{auth_token}"
       response = Net::HTTP.start(uri.host, uri.port, :use_ssl => uri.scheme == 'https') do |http|
         http.max_retries = 10
@@ -101,7 +101,7 @@ module Realogy
       uri = uri_for_endpoint(endpoint)
       uri.query && uri.query.length > 0 ? uri.query += '&' + query : uri.query = query
       request = Net::HTTP::Get.new(uri.request_uri)
-      request['Ocp-Apim-Subscription-Key'] = ENV["REALOGY_SUBSCRIPTION_KEY"]
+      request['Ocp-Apim-Subscription-Key'] = Rails.application.credentials.dig(:realogy, :subscription_key)
       request['Authorization'] = "Bearer #{auth_token}"
       response = Net::HTTP.start(uri.host, uri.port, :use_ssl => uri.scheme == 'https') do |http|
         http.max_retries = 10
@@ -112,10 +112,10 @@ module Realogy
   
     def auth_token
       oauth2_client_credentials_token(
-        ENV["REALOGY_CLIENT_ID"],
-        ENV["REALOGY_CLIENT_SECRET"],
-        ENV["REALOGY_TOKEN_URL"],
-        ENV["REALOGY_SCOPE"]
+        Rails.application.credentials.dig(:realogy, :client_id),
+        Rails.application.credentials.dig(:realogy, :client_secret),
+        Rails.application.credentials.dig(:realogy, :token_url),
+        Rails.application.credentials.dig(:realogy, :scope)
       )
     end
   
@@ -148,9 +148,9 @@ OAuth2::AccessToken.class_eval do
     data = nil
     token = nil
     client = OAuth2::Client.new(
-      ENV["REALOGY_CLIENT_ID"],
-      ENV["REALOGY_CLIENT_SECRET"],
-      token_url:  ENV["REALOGY_TOKEN_URL"]
+      Rails.application.credentials.dig(:realogy, :client_id),
+      Rails.application.credentials.dig(:realogy, :client_secret),
+      token_url:  Rails.application.credentials.dig(:realogy, :token_url)
     )
     if File.exists?(path)
       File.open(path) do |f|

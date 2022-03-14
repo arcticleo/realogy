@@ -31,15 +31,16 @@ Set up for usage by creating Realogy's migration and running it.
     rails g realogy:install
     rails db:migrate
 
-Realogy is expecting these ENV variables to be present to be able to function:
+Realogy is expecting these encrypted credentials to be present to be able to function:
 
 ```
-REALOGY_CLIENT_ID
-REALOGY_CLIENT_SECRET
-REALOGY_TOKEN_URL
-REALOGY_SCOPE
-REALOGY_SUBSCRIPTION_KEY
-REALOGY_API_BASE_URL
+realogy:
+  client_id: 
+  client_secret: 
+  token_url: 
+  scope: 
+  subscription_key: 
+  api_base_url: 
 ```
 
 ### Available Rake Tasks
