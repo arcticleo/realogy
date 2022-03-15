@@ -185,11 +185,11 @@ Each hash in the returned arrays includes a key `action` that returns either `De
 When no argument is passed, the delta returned is for the last 15 minutes. A custom minutes delta can be passed in:
 
 ```ruby
-realogy.get_agents_delta({since: 15.minutes.ago})     # 15 minutes is the default
-realogy.get_companies_delta({since: 1.hour.ago})
-realogy.get_listings_delta({since: 2.hours.ago})
-realogy.get_offices_delta({since: 5.minutes.ago})
-realogy.get_teams_delta({since: 1.day.ago})
+realogy.get_agents_delta(since: 20.minutes.ago)     # 20 minutes is the default
+realogy.get_companies_delta(since: 1.hour.ago)
+realogy.get_listings_delta(since: 2.hours.ago)
+realogy.get_offices_delta(since: 5.minutes.ago)
+realogy.get_teams_delta(since: 1.day.ago)
 ```
 
 #### Get all listings
@@ -219,6 +219,16 @@ realogy.get_all_listings(brandCode: "SIR", fromDate: 1.week.ago.to_query_string,
 realogy.get_all_listings(brandCode: "BHG", fromDate: 1.week.ago.to_query_string, limit: 10)
 
 ```
+
+In case there are more listings available than is returned by the `get_all_listings` call, there will be a `nextLink` value present in the JSON response. By calling the `nextLink` URL as long as it is present, you will traverse through all results. 
+
+If you want to automatically return all results, pass in the flag `followNext: true` in your call:
+
+```ruby
+realogy.get_all_listings( ... , followNext: true)
+```
+
+When passing in `followNext: true`, the returned result will be an array of entities rather than the JSON object returned if it is omitted.
 
 
 #### Retrieve JSON object
