@@ -90,17 +90,30 @@ module Realogy
 
     DELTA_API_ENDPOINTS.keys.each do |method_name|
       define_method method_name do |*args|
-        entities = []
-        hash = args.first.is_a?(::Hash) ? args.first : {since: 15.minutes.ago}
-        params = {'since': JSON[hash[:since].to_json]}
+        hash = args.first.is_a?(::Hash) ? args.first : {}
+        hash[:since] = JSON(20.minutes.ago.to_json) if hash[:since].blank?
         endpoint = DELTA_API_ENDPOINTS[method_name]
-        response = perform_api_call(endpoint, params)
-        entities << response["data"]
-        while response["nextLink"].present?
-          response = perform_simple_call(response["nextLink"])
+        params = {
+          'since': JSON[hash[:since].to_json],
+          'brandCode': hash[:brandCode],
+          'companyIds': hash[:companyIds].to_s.split(',').map(&:strip),
+          'countryCode': hash[:countryCode],
+          'limit': hash[:limit],
+          'type': hash[:type],
+          'followNext': hash[:followNext]
+        }.compact
+        if hash[:followNext]
+          entities = []
+          response = perform_api_call(endpoint, params)
           entities << response["data"]
+          while response["nextLink"].present?
+            response = perform_simple_call(response["nextLink"])
+            entities << response["data"]
+          end
+          return entities.flatten
+        else
+          return perform_api_call(endpoint, params)
         end
-        return entities.flatten
       end
     end
   

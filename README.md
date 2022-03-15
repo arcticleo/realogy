@@ -182,7 +182,7 @@ realogy.get_teams_delta
 
 Each hash in the returned arrays includes a key `action` that returns either `Delete` or `Upsert` to indicate if the object has been deleted or created/updated.
 
-When no argument is passed, the delta returned is for the last 15 minutes. A custom minutes delta can be passed in:
+When no argument is passed, the delta returned is for the last 20 minutes. A custom minutes delta can be passed in:
 
 ```ruby
 realogy.get_agents_delta(since: 20.minutes.ago)     # 20 minutes is the default
@@ -191,6 +191,28 @@ realogy.get_listings_delta(since: 2.hours.ago)
 realogy.get_offices_delta(since: 5.minutes.ago)
 realogy.get_teams_delta(since: 1.day.ago)
 ```
+
+A few additional parameters are allowed:
+
+```ruby
+realogy.get_listings_delta(brandCode: "SIR")
+realogy.get_listings_delta(companyIds: "12345")
+realogy.get_listings_delta(companyIds: "12345, 23456, 34567")
+realogy.get_listings_delta(countryCode: "IT")
+realogy.get_listings_delta(limit: 10)
+realogy.get_listings_delta(type: "ForSale")
+```
+
+In case there are more entities available than is returned by the initial call, there will be a `nextLink` value present in the JSON response. By calling the `nextLink` URL as long as it is present, you will make retrieve all results. 
+
+If you want to automatically return all entities, pass in the flag `followNext: true` in your call:
+
+```ruby
+realogy.get_listings_delta( ... , followNext: true)
+```
+
+When passing in `followNext: true`, the returned result will be an array of entities rather than the JSON object returned if it is omitted.
+
 
 #### Get all listings
 
