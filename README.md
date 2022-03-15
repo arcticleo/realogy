@@ -219,26 +219,26 @@ When passing in `followNext: true`, the returned result will be an array of enti
 To retrieve all listings, `fromDate` and `brandCode` are mandatory parameters. A minimum call to retrieve all listing entities could look like this:
 
 ```ruby
-realogy.get_all_listings(brandCode: "COR", fromDate: 1.week.ago.to_query_string)
+realogy.get_all_listings(brandCode: "COR", fromDate: 1.week.ago.json_string)
 ```
 
 These are additional filters that can be applied:
 
 ```ruby
-# fromDate and toDate must be converted to supported text format. This is done with to_query_string:
-realogy.get_all_listings(brandCode: "COR", fromDate: 1.week.ago.to_query_string, toDate: DateTime.now.to_query_string)
+# fromDate and toDate must be converted to supported text format. This is done with json_string:
+realogy.get_all_listings(brandCode: "COR", fromDate: 1.week.ago.json_string, toDate: DateTime.now.json_string)
 
 # Allowed type values: ForSale, ForRent, ForSaleCommercial, & ForLeaseCommercial
-realogy.get_all_listings(brandCode: "C21", fromDate: 1.week.ago.to_query_string, type: "ForSale")
+realogy.get_all_listings(brandCode: "C21", fromDate: 1.week.ago.json_string, type: "ForSale")
 
 # Allowed status values: Active, Available, Pending, & Closed
-realogy.get_all_listings(brandCode: "CB", fromDate: 1.week.ago.to_query_string, status: "Active")
+realogy.get_all_listings(brandCode: "CB", fromDate: 1.week.ago.json_string, status: "Active")
 
 # Limit results to a particular country
-realogy.get_all_listings(brandCode: "SIR", fromDate: 1.week.ago.to_query_string, countryCode: "IT")
+realogy.get_all_listings(brandCode: "SIR", fromDate: 1.week.ago.json_string, countryCode: "IT")
 
 # Limit number of listings per result batch. Allowed span: 10–1000.
-realogy.get_all_listings(brandCode: "BHG", fromDate: 1.week.ago.to_query_string, limit: 10)
+realogy.get_all_listings(brandCode: "BHG", fromDate: 1.week.ago.json_string, limit: 10)
 
 ```
 
