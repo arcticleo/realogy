@@ -108,31 +108,31 @@ namespace :realogy do
   
   desc "Delta update for Agents. Optionally provide delta in minutes."
   task :sync_agents_delta, [:since_minutes] => [:environment] do |t, args|
-    args.with_defaults(since_minutes: 15)
+    args.with_defaults(since_minutes: 20)
     perform_delta_update_for Realogy::Agent, args[:since_minutes]
   end
 
   desc "Delta update for Companies. Optionally provide delta in minutes."
   task :sync_companies_delta, [:since_minutes] => [:environment] do |t, args|
-    args.with_defaults(since_minutes: 15)
+    args.with_defaults(since_minutes: 20)
     perform_delta_update_for Realogy::Company, args[:since_minutes]
   end
 
   desc "Delta update for Listings. Optionally provide delta in minutes."
   task :sync_listings_delta, [:since_minutes] => [:environment] do |t, args|
-    args.with_defaults(since_minutes: 15)
+    args.with_defaults(since_minutes: 20)
     perform_delta_update_for Realogy::Listing, args[:since_minutes]
   end
 
   desc "Delta update for Offices. Optionally provide delta in minutes."
   task :sync_offices_delta, [:since_minutes] => [:environment] do |t, args|
-    args.with_defaults(since_minutes: 15)
+    args.with_defaults(since_minutes: 20)
     perform_delta_update_for Realogy::Office, args[:since_minutes]
   end
 
   desc "Delta update for Teams. Optionally provide delta in minutes."
   task :sync_teams_delta, [:since_minutes] => [:environment] do |t, args|
-    args.with_defaults(since_minutes: 15)
+    args.with_defaults(since_minutes: 20)
     perform_delta_update_for Realogy::Team, args[:since_minutes]
   end
 
