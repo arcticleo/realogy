@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    realogy (0.5.9)
+    realogy (0.6.3)
       activerecord (>= 5.0)
       oauth2
 

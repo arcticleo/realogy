@@ -70,9 +70,21 @@ module Realogy
           'limit': hash[:limit],
           'status': hash[:status],
           'toDate': hash[:toDate],
-          'type': hash[:type]
+          'type': hash[:type],
+          'followNext': hash[:followNext]
         }.compact
-        return perform_api_call(endpoint, params)
+        if hash[:followNext]
+          entities = []
+          response = perform_api_call(endpoint, params)
+          entities << response["data"]
+          while response["nextLink"].present?
+            response = perform_simple_call(response["nextLink"])
+            entities << response["data"]
+          end
+          return entities.flatten
+        else
+          return perform_api_call(endpoint, params)
+        end
       end
     end
 
