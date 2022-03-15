@@ -163,14 +163,18 @@ module Realogy
       return client.client_credentials.get_token(scope: scope)
     end
   
+    def oauth2_token_path
+      return File.join(Dir.tmpdir, [Rails.application.credentials.dig(:realogy, :client_id).parameterize, "-oauth-token.json"].join)
+    end
+  
     def oauth2_client_credentials_token(client_id, client_secret, token_url, scope)
-      @token = OAuth2::AccessToken.read_token_from_file(".oauth-access-token.json")
+      @token = OAuth2::AccessToken.read_token_from_file(oauth2_token_path)
       expiry = @token.try(:expires_at).present? ? DateTime.strptime(@token.expires_at.to_s, '%s') : 1.day.ago
       if expiry > DateTime.now.utc
         return @token.token
       else
         @token = oauth2_client_credentials_token_object(client_id, client_secret, token_url, scope)
-        @token.save_token_to_file(".oauth-access-token.json")
+        @token.save_token_to_file(oauth2_token_path)
         return @token.token
       end
     end
