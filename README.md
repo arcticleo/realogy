@@ -128,9 +128,10 @@ config.active_job.queue_adapter = :delayed_job
 ```ruby
 realogy = Realogy::DataSync.client
 ```
-#### Retrieve array of objects
 
-The calls to retrieve entities are:
+#### Get active objects
+
+The calls to retrieve active entities are:
 
 ```ruby
 realogy.get_active_agents
@@ -140,20 +141,31 @@ realogy.get_active_offices
 realogy.get_active_teams
 ```
 
-When no argument is submitted, all entities are returned. Filters can be applied for `brandCode` or `countryCode` though, provided as keys in a hash. For example:
+When no argument is submitted, all active entities are returned. 
+
+Filters can be applied for `brandCode` and `countryCode`. For example:
 
 ```ruby
 # Fetch all active agents, for all brands, in all countries:
-realogy.get_active_agents()
+realogy.get_active_agents
 
 # Fetch all active agents, for all brands, in Sweden:
-realogy.get_active_agents({countryCode: "SE"})
+realogy.get_active_companies(countryCode: "SE")
 
+# Allowed brandCode values: C21, CB, ERA, SIR, BHG, CBC, ZIP, CLB, & COR
 # Fetch all active Sotheby's agents in all countries:
-realogy.get_active_agents({brandCode: "SIR"})
+realogy.get_active_offices(brandCode: "SIR")
 
 # Fetch all active Sotheby's agents in Sweden:
-realogy.get_active_agents({brandCode: "SIR", countryCode: "SE"})
+realogy.get_active_teams(brandCode: "SIR", countryCode: "SE")
+```
+
+When fetching listings, the type of listing can also be specified:
+
+```ruby
+# Allowed type values: ForSale, ForRent, ForSaleCommercial, & ForLeaseCommercial
+# Fetch all active agents, for all brands, in all countries:
+realogy.get_active_listings(type: "ForSale")
 ```
 
 #### Retrieve delta of objects
@@ -179,6 +191,35 @@ realogy.get_listings_delta({since: 2.hours.ago})
 realogy.get_offices_delta({since: 5.minutes.ago})
 realogy.get_teams_delta({since: 1.day.ago})
 ```
+
+#### Get all listings
+
+To retrieve all listings, `fromDate` and `brandCode` are mandatory parameters. A minimum call to retrieve all listing entities could look like this:
+
+```ruby
+realogy.get_all_listings(brandCode: "COR", fromDate: 1.week.ago.to_query_string)
+```
+
+These are additional filters that can be applied:
+
+```ruby
+# fromDate and toDate must be converted to supported text format. This is done with to_query_string:
+realogy.get_all_listings(brandCode: "COR", fromDate: 1.week.ago.to_query_string, toDate: DateTime.now.to_query_string)
+
+# Allowed type values: ForSale, ForRent, ForSaleCommercial, & ForLeaseCommercial
+realogy.get_all_listings(brandCode: "C21", fromDate: 1.week.ago.to_query_string, type: "ForSale")
+
+# Allowed status values: Active, Available, Pending, & Closed
+realogy.get_all_listings(brandCode: "CB", fromDate: 1.week.ago.to_query_string, status: "Active")
+
+# Limit results to a particular country
+realogy.get_all_listings(brandCode: "SIR", fromDate: 1.week.ago.to_query_string, countryCode: "IT")
+
+# Limit number of listings per result batch. Allowed span: 10–1000.
+realogy.get_all_listings(brandCode: "BHG", fromDate: 1.week.ago.to_query_string, limit: 10)
+
+```
+
 
 #### Retrieve JSON object
 

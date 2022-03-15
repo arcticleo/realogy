@@ -23,6 +23,10 @@ module Realogy
       get_active_teams: "teams/active"
     }
   
+    ALL_API_ENDPOINTS = {
+      get_all_listings: "listings/all"
+    }
+  
     DELTA_API_ENDPOINTS = {
       get_agents_delta: "agents/delta",
       get_companies_delta: "companies/delta",
@@ -47,7 +51,26 @@ module Realogy
         endpoint = ACTIVE_API_ENDPOINTS[method_name]
         params = {
           'brandCode': hash[:brandCode],
-          'countryCode': hash[:countryCode]
+          'countryCode': hash[:countryCode],
+          'type': hash[:type]
+        }.compact
+        return perform_api_call(endpoint, params)
+      end
+    end
+
+    ALL_API_ENDPOINTS.keys.each do |method_name|
+      define_method method_name do |*args|
+        hash = args.first.is_a?(::Hash) ? args.first : {}
+        endpoint = ALL_API_ENDPOINTS[method_name]
+        params = {
+          'brandCode': hash[:brandCode],
+          'countryCode': hash[:countryCode],
+          'cursor': hash[:cursor],
+          'fromDate': hash[:fromDate],
+          'limit': hash[:limit],
+          'status': hash[:status],
+          'toDate': hash[:toDate],
+          'type': hash[:type]
         }.compact
         return perform_api_call(endpoint, params)
       end
