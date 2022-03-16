@@ -14,10 +14,14 @@ class Realogy::Entity < ApplicationRecord
     @object.last_update_on = hash["lastUpdateOn"].to_s.to_datetime
     @object.populate if @object.needs_updating?
   end
-  
-  def populate
+
+  def get_data
     call = ["get_", self.class.to_s.downcase.split("::").last, "_by_id"].join.to_sym
-    result = Realogy::DataSync.client.__send__(call, self.entity_id)
+    Realogy::DataSync.client.__send__(call, self.entity_id)
+  end
+
+  def populate
+    result = get_data
     self.data = result unless result.blank?
     self.save if self.changed?
   end
