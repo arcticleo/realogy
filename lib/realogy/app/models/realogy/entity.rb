@@ -2,7 +2,7 @@ class Realogy::Entity < ApplicationRecord
   self.table_name = 'realogy_entities'
 
   validates :type, presence: true
-  validates :entity_id, presence: true
+  validates :entity_id, presence: true, uniqueness: true
   validates :last_update_on, presence: true
 
   def needs_updating?
