@@ -102,7 +102,7 @@ namespace :realogy do
       when "Upsert"
         hash["class"] = klass.to_s
         active_job_configured? ? PopulateRealogyEntityJob.perform_later(hash) : klass::triage(hash)
-      end rescue nil
+      end
     end
   end
   
