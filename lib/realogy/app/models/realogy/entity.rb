@@ -6,58 +6,79 @@ class Realogy::Entity < ApplicationRecord
   validates :last_update_on, presence: true
 
   def needs_updating?
-    self.new_record? || self.last_update_on_changed? || self.data.blank?
+    new_record? || last_update_on_changed? || data.blank?
   end
 
-  def self.triage hash
-    @object = self.find_or_initialize_by(entity_id: [hash["entityId"], hash["id"]].compact.first)
+  def self.triage(hash)
+    entity_id = [hash["entityId"], hash["id"]].compact.first
+    @object = find_or_initialize_by(entity_id: entity_id)
     @object.last_update_on = hash["lastUpdateOn"].to_s.to_datetime
-    @object.populate if @object.needs_updating?
+
+    if data_provided_in_hash?(hash)
+      @object.data = extract_entity_data(hash)
+      @object.save if @object.changed?
+    elsif @object.needs_updating?
+      @object.populate
+    end
   end
 
   def get_data
     call = ["get_", self.class.to_s.downcase.split("::").last, "_by_id"].join.to_sym
-    Realogy::DataSync.client.__send__(call, self.entity_id)
+    Realogy::DataSync.client.__send__(call, entity_id)
   end
 
   def populate
     result = get_data
     self.data = result unless result.blank?
-    self.save if self.changed?
+    save if changed?
   end
 
   def dig_for_array(*path)
-    return nil unless (json = self.data).is_a?(Hash)
+    return nil unless (json = data).is_a?(Hash)
     (v = json.dig(*path)).is_a?(Array) ? v : nil
   end
 
   def dig_for_boolean(*path)
-    return nil unless (json = self.data).is_a?(Hash)
+    return nil unless (json = data).is_a?(Hash)
     (v = json.dig(*path)).to_s.upcase.eql?("TRUE") ? true : nil
   end
 
   def dig_for_datetime(*path)
-    self.data.dig(*path).to_datetime rescue nil
+    data.dig(*path).to_datetime rescue nil
   end
 
   def dig_for_decimal(*path)
-    return nil unless (json = self.data).is_a?(Hash)
+    return nil unless (json = data).is_a?(Hash)
     (v = json.dig(*path).to_f) != 0.0 ? v : nil
   end
 
   def dig_for_hash(*path)
-    return nil unless (json = self.data).is_a?(Hash)
+    return nil unless (json = data).is_a?(Hash)
     (v = json.dig(*path)).is_a?(Hash) ? v : nil
   end
 
   def dig_for_integer(*path)
-    return nil unless (json = self.data).is_a?(Hash)
+    return nil unless (json = data).is_a?(Hash)
     (v = json.dig(*path).to_i) != 0 ? v : nil
   end
 
   def dig_for_string(*path)
-    return nil unless (json = self.data).is_a?(Hash)
+    return nil unless (json = data).is_a?(Hash)
     (v = json.dig(*path)).to_s.present? ? (v.eql?("0") ? nil : v) : nil
   end
 
+  class << self
+    private
+
+    def data_provided_in_hash?(hash)
+      # Check if hash contains entity data beyond just metadata fields
+      metadata_keys = %w[entityId id lastUpdateOn class action]
+      (hash.keys - metadata_keys).any?
+    end
+
+    def extract_entity_data(hash)
+      # Remove metadata fields and return just the entity data
+      hash.except("class", "action")
+    end
+  end
 end
