@@ -204,7 +204,7 @@ OAuth2::AccessToken.class_eval do
       Rails.application.credentials.dig(:realogy, :client_secret),
       token_url:  Rails.application.credentials.dig(:realogy, :token_url)
     )
-    if File.exists?(path)
+    if File.exist?(path)
       File.open(path) do |f|
         token = OAuth2::AccessToken.from_hash(client, JSON.parse(f.read))
       end
