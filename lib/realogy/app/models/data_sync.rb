@@ -152,6 +152,10 @@ module Realogy
       request['Ocp-Apim-Subscription-Key'] = Rails.application.credentials.dig(:realogy, :subscription_key)
       request['Authorization'] = "Bearer #{auth_token}"
       response = Net::HTTP.start(uri.host, uri.port, :use_ssl => uri.scheme == 'https') do |http|
+        http.open_timeout = 10      # seconds to wait for connection
+        http.read_timeout = 30      # seconds to wait for response
+        http.write_timeout = 10
+        http.ssl_timeout = 10
         http.max_retries = 10
         http.request(request)
       end

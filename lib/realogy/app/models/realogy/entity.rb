@@ -23,8 +23,26 @@ class Realogy::Entity < ApplicationRecord
   end
 
   def get_data
-    call = ["get_", self.class.to_s.downcase.split("::").last, "_by_id"].join.to_sym
-    Realogy::DataSync.client.__send__(call, entity_id)
+    retries = 0
+    max_retries = 3
+  
+    begin
+      call = ["get_", self.class.to_s.downcase.split("::").last, "_by_id"].join.to_sym
+      Realogy::DataSync.client.__send__(call, entity_id)
+    rescue OpenSSL::SSL::SSLError, Net::OpenTimeout, Net::ReadTimeout, Errno::ECONNRESET => e
+      retries += 1
+      if retries <= max_retries
+        sleep_time = 2**retries  # 2s, 4s, 8s
+        Rails.logger.warn "[Realogy::Entity] Retry #{retries}/#{max_retries} for #{entity_id} after 
+  #{sleep_time}s (#{e.class})"
+        sleep(sleep_time)
+        retry
+      else
+        Rails.logger.error "[Realogy::Entity] Failed to fetch #{entity_id} after #{max_retries} retries:
+   #{e.message}"
+        raise
+      end
+    end
   end
 
   def populate
