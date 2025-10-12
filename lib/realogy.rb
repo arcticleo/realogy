@@ -14,4 +14,14 @@ require "realogy/app/jobs/application_job.rb"
 require "realogy/app/jobs/populate_realogy_entity_job.rb"
 
 module Realogy
+  class << self
+    attr_accessor :base_record_class
+
+    def configure
+      yield self
+    end
+  end
+
+  # Default to ApplicationRecord for backward compatibility
+  self.base_record_class = 'ApplicationRecord'
 end

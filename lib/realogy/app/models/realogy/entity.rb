@@ -1,4 +1,4 @@
-class Realogy::Entity < ApplicationRecord
+class Realogy::Entity < Object.const_get(Realogy.base_record_class)
   self.table_name = 'realogy_entities'
 
   validates :type, presence: true
