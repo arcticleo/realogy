@@ -148,18 +148,29 @@ module Realogy
       query = params.present? ? URI.encode_www_form(params) : ""
       uri = uri_for_endpoint(endpoint)
       uri.query && uri.query.length > 0 ? uri.query += '&' + query : uri.query = query
-      request = Net::HTTP::Get.new(uri.request_uri)
-      request['Ocp-Apim-Subscription-Key'] = Rails.application.credentials.dig(:realogy, :subscription_key)
-      request['Authorization'] = "Bearer #{auth_token}"
-      response = Net::HTTP.start(uri.host, uri.port, :use_ssl => uri.scheme == 'https') do |http|
-        http.open_timeout = 10      # seconds to wait for connection
-        http.read_timeout = 30      # seconds to wait for response
-        http.write_timeout = 10
-        http.ssl_timeout = 10
-        http.max_retries = 10
-        http.request(request)
+      begin
+        request = Net::HTTP::Get.new(uri.request_uri)
+        request['Ocp-Apim-Subscription-Key'] = Rails.application.credentials.dig(:realogy, :subscription_key)
+        request['Authorization'] = "Bearer #{auth_token}"
+        response = Net::HTTP.start(uri.host, uri.port, :use_ssl => uri.scheme == 'https') do |http|
+          http.open_timeout = 10      # seconds to wait for connection
+          http.read_timeout = 30      # seconds to wait for response
+          http.write_timeout = 10
+          http.ssl_timeout = 10
+          http.max_retries = 10
+          http.request(request)
+        end
+        return JSON(response.body) rescue nil
+      rescue Net::ReadTimeout, Net::OpenTimeout
+        # One retry on transient timeouts; a second failure propagates so the
+        # caller's ActiveJob retry and the next scheduled run pick up the delta.
+        raise if @api_retry_exhausted
+        @api_retry_exhausted = true
+        sleep 2
+        retry
+      ensure
+        @api_retry_exhausted = nil
       end
-      return JSON(response.body) rescue nil
     end
   
     def auth_token
